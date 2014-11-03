@@ -1,7 +1,10 @@
 package com.uelei.JDuplicateFinder;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Arrays;
 
 public class FindFiles {
 	static Connection con = Sqlmd5.openDB();
@@ -10,52 +13,69 @@ public class FindFiles {
 	static int ai = 0;
 	
 	
-	public static void scand(String path){
-		File fpath = new File(path); 
-		File[] listOfFiles = fpath.listFiles();
-		for(File f : listOfFiles ){
-			if(f.isDirectory()){
-				++i;
-				directorys[i] = f.getPath();
-			}
-		 }
-	}
-	
-	public static void lisfiles(String path){
-//		Connection con = Sqlmd5.openDB();
-		
-		File folder = new File(path);
-		File[] list = folder.listFiles();	
-		for(File l : list ){
-			if(l.isFile()){
-				if(!l.getName().equals(".DS_Store")){
+//	public static void main(String[] args) {
+//		File currentDir = new File("."); // current directory
+//		displayDirectoryContents(currentDir);
+//	}
+
+	public static void displayDirectoryContents(File dir) {
+		File[] files = dir.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				//System.out.println("looking in directory:" + file.getCanonicalPath());
+				
+				displayDirectoryContents(file);
+			} else {
+				
+				
+				if(!file.getName().equals(".DS_Store")){
 					
-					try {
+				
 						
-						Sqlmd5.addnew(con, l.getPath(),  Md5CheckSum.getMD5Checksum(l.getPath()));
-//						System.out.println(Md5CheckSum.getMD5Checksum(l.getPath()));
+						try {
+							Sqlmd5.addnew(con, file.getCanonicalPath(),  Md5CheckSum.getMD5Checksum(file.getPath()));
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+//							System.out.println(Md5CheckSum.getMD5Checksum(l.getPath()));
 
 						
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
+		
 				}
+					
+				
+//					System.out.println("     file:" + file.getCanonicalPath());
 			}
 		}
-		
-
-	
 	}
 	
-	public static void listing(String orig ){
-		directorys[0] = orig ;
-		while (ai <= i ){
-			scand(directorys[ai]);
-			lisfiles(directorys[ai]);
-			++ai;
-		 }		 
+	
+	
+	
+	
+	public static void listing(String[] orig ){
+		for (String or : orig ){
+
+			File currentDir = new File(or); // current directory
+			displayDirectoryContents(currentDir);
+			
+			
+			}
+		
+
+
+//		while (ai < i ){			
+//			scand(directorys[ai]);
+//			lisfiles(directorys[ai]);
+//			++ai;
+//		 }
+		
+
+		
 	}
 	
 	

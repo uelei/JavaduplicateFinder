@@ -19,8 +19,11 @@ public class Sqlmd5 {
 		 Connection con = null;
 
 		 try {
-			con = DriverManager.getConnection("jdbc:sqlite:/Users/uelei/Downloads/filemd5.db");
-//			init(con);
+				con = DriverManager.getConnection("jdbc:sqlite:filemd5.db");
+//				con = DriverManager.getConnection("jdbc:sqlite:/Users/uelei/Downloads/filemd5.db");
+
+
+			 //			init(con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

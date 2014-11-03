@@ -8,13 +8,16 @@ public class Main {
 		Connection c = Sqlmd5.openDB();
 		Sqlmd5.init(c);
 
-		FindFiles.listing("/Users/uelei/Downloads/2008-12-31_viradaAno");
-			
 		
-		FindFiles.listing("/Users/uelei/Downloads/untitled folder");
+		String[] dir= {"/Users/uelei/Downloads/temp","/Users/uelei/Downloads/untitled folder" };
+		
+		
+		FindFiles.listing(dir);
+			
+
 
 		
-		Sqlmd5.listall(c);
+//		Sqlmd5.listall(c);
 
 		Sqlmd5.closeDB(c);
 		
