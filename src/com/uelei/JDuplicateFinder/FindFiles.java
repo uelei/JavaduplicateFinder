@@ -1,10 +1,8 @@
 package com.uelei.JDuplicateFinder;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 public class FindFiles {
 	static Connection con = Sqlmd5.openDB();
@@ -65,15 +63,7 @@ public class FindFiles {
 			
 			
 			}
-		
 
-
-//		while (ai < i ){			
-//			scand(directorys[ai]);
-//			lisfiles(directorys[ai]);
-//			++ai;
-//		 }
-		
 
 		
 	}
