@@ -17,7 +17,7 @@ public class Main {
 
 
 		
-//		Sqlmd5.listall(c);
+		Sqlmd5.listall(c);
 
 		Sqlmd5.closeDB(c);
 		

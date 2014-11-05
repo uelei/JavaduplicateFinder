@@ -48,27 +48,48 @@ public class Sqlmd5 {
 		
 		Statement statement = con.createStatement();
 		ResultSet re = statement.executeQuery("select * from files where md5 like '"+md5+"'");
-		while (re.next()){
-			System.out.println("-------------duplicates ");
-			System.out.println(path);
-			System.out.println(re.getString("path"));
-			System.out.println("--------------end");
+		if (re.next()){
+//
+//				System.out.println("-------------duplicates ");
+//		do	
+//		{			System.out.println(path);
+//		System.out.println(re.getString("path"));
+//		}
+//		while (re.next());
+//	
+//		
+//		System.out.println("--------------end");
+			ResultSet rr = statement.executeQuery("select * from duplicates where md5 like '"+md5+"'");
+			if(!rr.next()){
+				
+				statement.executeUpdate("insert into duplicates values( NULL,'"+md5+"')");
+				
+			}
 			
-		}
+
+
+			
+			}
 	
-		statement.executeUpdate("insert into files values(null ,'"+path+"','"+md5+"')");
+		statement.executeUpdate("insert into files values(NULL,'"+path+"','"+md5+"')");
 		
 	}
 	
 	public static void listall(Connection con) throws SQLException{
 		
-		
 		 Statement statement = con.createStatement();
-		ResultSet rs = statement.executeQuery("select * from files");
-	      while(rs.next()){
-	    	  System.out.println("name = "+rs.getString("path"));
-	    	  System.out.println("id = "+ rs.getString("md5"));
+		 ResultSet rs = statement.executeQuery("select * from duplicates;");
+ 
+		 while(rs.next()){
+			 Statement sta = con.createStatement();
+	    	  System.out.println(rs.getString("md5")+"\n");
+	    	  ResultSet res = sta.executeQuery("select * from files where md5 like '"+rs.getString("md5")+"'");
+	      	  while(res.next()){
+	      			System.out.println("name = "+res.getString("path"));}
+	      	  System.out.println("\n-------------------------------------------------------------------\n");
 	      }
+	     
+	      
 	}
 	
 	
@@ -80,7 +101,10 @@ public class Sqlmd5 {
 			statement = con.createStatement();
 			 statement.setQueryTimeout(30);
 			 statement.executeUpdate("drop table if exists files");
-			 statement.executeUpdate("create table if not exists files(id integer auto_increment, path string, md5 string)");
+			 statement.executeUpdate("drop table if exists duplicates");
+			 statement.executeUpdate("create table if not exists files(id integer auto_increment, path string, md5 string)");	 
+//			 statement.executeUpdate("drop table if exists duplicates");
+			 statement.executeUpdate("create table if not exists duplicates(id integer auto_increment, md5 string)");			 
 			 System.out.println(".........started");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
